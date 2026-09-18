@@ -44,6 +44,7 @@ def test_rollback_ops_since(journal):
     journal.record("test-session", "file-write", path="/tmp/b")
     journal.record("test-session", "shell", command="rm -rf /tmp/c")
     ops = journal.get_ops_since("test-session", cp_id)
+    # Returns only ops strictly AFTER the checkpoint (the checkpoint itself is just a marker)
     assert len(ops) == 2
 
 

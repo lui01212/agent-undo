@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sqlite3
 import time
 from contextlib import contextmanager
@@ -145,7 +146,7 @@ class Journal:
             return row["operation_id"] if row else None
 
     def get_ops_since(self, session_id: str, since_op_id: int) -> list[dict]:
-        """Get all operations after a given operation id."""
+        """Get all operations after a given operation id (exclusive)."""
         with self.transaction() as conn:
             row = conn.execute(
                 "SELECT timestamp FROM operations WHERE id = ?", (since_op_id,)
@@ -157,7 +158,7 @@ class Journal:
                 """SELECT o.*, c.label as checkpoint_label
                    FROM operations o
                    LEFT JOIN checkpoints c ON c.operation_id = o.id
-                   WHERE o.session_id = ? AND o.timestamp >= ?
+                   WHERE o.session_id = ? AND o.timestamp > ?
                    ORDER BY o.timestamp DESC""",
                 (session_id, ts),
             ).fetchall()
@@ -178,6 +179,3 @@ class Journal:
                 "total_sessions": sessions,
                 "by_type": {r["op_type"]: r["cnt"] for r in types},
             }
-
-
-import json  # noqa: E402 — placed after class for readability but imported at top-level use
