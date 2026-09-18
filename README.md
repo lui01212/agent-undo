@@ -130,6 +130,10 @@ MIT
 
 PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Security
+
+For security policies, supported versions, and vulnerability reporting procedures, please refer to [SECURITY.md](SECURITY.md).
+
 ## Credits
 
 Built by [Yunare Maia](https://github.com/yunaremaia) — open-source developer from Mossoró-RN, Brazil.
